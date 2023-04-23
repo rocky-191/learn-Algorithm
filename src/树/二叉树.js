@@ -83,3 +83,32 @@ var buildTree = function (preorder, inorder) {
 };
 // 详细解析参见：
 // https://labuladong.github.io/article/?qno=105
+
+
+// leetcode 230 寻找二叉搜索树中第k小的元素
+// https://leetcode.cn/problems/kth-smallest-element-in-a-bst/
+/**
+ * @param {TreeNode} root
+ * @param {number} k
+ * @return {number}
+ */
+
+var kthSmallest = function(root, k) {
+  var res=0;
+  var rank=0;
+  function traverse(root,k){
+      if(root==null) return;
+
+      traverse(root.left,k);
+      // 中序遍历
+      rank++;
+      if(k===rank){
+          res=root.val;
+          return;
+      }
+      traverse(root.right,k)
+  }
+
+  traverse(root,k);
+  return res;
+};
