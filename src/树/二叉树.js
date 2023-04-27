@@ -112,3 +112,82 @@ var kthSmallest = function(root, k) {
   traverse(root,k);
   return res;
 };
+
+// leetcode 543 二叉树的直径
+// https://leetcode.cn/problems/diameter-of-binary-tree/
+
+/**
+ * 记录最大直径的长度
+ * @param {TreeNode} root 
+ * @return {number}
+ */
+var diameterOfBinaryTree = function(root) {
+  let maxDiameter = 0;
+  /**
+   * 递归获取深度
+   * @param {TreeNode} root 
+   * @return {number}
+   */
+  const maxDepth = function(root) {
+      if (root === null) {
+          return 0;
+      }
+      let leftMax = maxDepth(root.left);
+      let rightMax = maxDepth(root.right);
+      // 后序位置，顺便计算最大直径
+      let myDiameter = leftMax + rightMax;
+      maxDiameter = Math.max(maxDiameter, myDiameter);
+      return 1 + Math.max(leftMax, rightMax);
+  }
+  maxDepth(root);
+  return maxDiameter;
+};
+
+
+// https://labuladong.github.io/algo/di-ling-zh-bfe1b/dong-ge-da-334dd/
+// 层序遍历
+// 输入一棵二叉树的根节点，层序遍历这棵二叉树
+function levelTraverse(root) {
+  if (root == null) return;
+  var q = new LinkedList();
+  q.offer(root);
+
+  // 从上到下遍历二叉树的每一层
+  while (!q.isEmpty()) {
+      var sz = q.size();
+      // 从左到右遍历每一层的每个节点
+      for (var i = 0; i < sz; i++) {
+          var cur = q.poll();
+          // 将下一层节点放入队列
+          if (cur.left != null) {
+              q.offer(cur.left);
+          }
+          if (cur.right != null) {
+              q.offer(cur.right);
+          }
+      }
+  }
+}
+
+// 另一种思路
+var levelTraverse = function(root) {
+  const res = [];
+  traverse(root, 0);
+  return res;
+  
+  // 遍历二叉树的每一层，将每层结点的值存储到 res 中
+  function traverse(root, depth) {
+      if (!root) {
+          return;
+      }
+      // 当前层数还未被存储过，则初始化对应层的数组
+      if (res.length <= depth) {
+          res.push([]);
+      }
+      // 将节点值存储到对应的层数中
+      res[depth].push(root.val);
+      // 递归遍历左右子节点
+      traverse(root.left, depth + 1);
+      traverse(root.right, depth + 1);
+  }
+};
