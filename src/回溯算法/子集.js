@@ -2,7 +2,7 @@
 // https://leetcode.cn/problems/subsets/
 
 function subsets(nums) {
-  let res=[];
+  const res=[];
   const track=[];
 
   function backtrack(start){
