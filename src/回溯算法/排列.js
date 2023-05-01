@@ -59,3 +59,50 @@ var permute = function(nums) {
 }
 // 详细解析参见：
 // https://labuladong.github.io/article/?qno=46
+
+
+// leetcode 47 全排列
+// https://leetcode.cn/problems/permutations-ii/
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var permuteUnique = function(nums) {
+  let res = [];
+  let track = [];
+  let used = new Array(nums.length).fill(false);
+
+  // 先排序，让相同的元素靠在一起
+  nums.sort((a, b) => a - b);
+  backtrack(nums, used, track, res);
+
+  return res;
+};
+
+/**
+* @param {number[]} nums
+* @param {boolean[]} used
+* @param {number[]} track
+* @param {number[][]} res
+*/
+function backtrack(nums, used, track, res) {
+  if (track.length === nums.length) {
+      res.push(track.slice());
+      return;
+  }
+
+  for (let i = 0; i < nums.length; i++) {
+      if (used[i]) {
+          continue;
+      }
+      // 新添加的剪枝逻辑，固定相同的元素在排列中的相对位置
+      if (i > 0 && nums[i] === nums[i - 1] && !used[i - 1]) {
+          continue;
+      }
+      track.push(nums[i]);
+      used[i] = true;
+      backtrack(nums, used, track, res);
+      track.pop();
+      used[i] = false;
+  }
+}

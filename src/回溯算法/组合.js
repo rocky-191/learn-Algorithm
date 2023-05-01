@@ -65,3 +65,55 @@ var combinationSum2 = function(candidates, target) {
   backtrack(sortedCandidates, 0, target);
   return res;
 };
+
+
+// leetcode 39 组合总和
+// https://leetcode.cn/problems/combination-sum/
+// 注意：javascript 代码由 chatGPT🤖 根据我的 java 代码翻译，旨在帮助不同背景的读者理解算法逻辑。
+// 本代码还未经过力扣测试，仅供参考，如有疑惑，可以参照我写的 java 代码对比查看。
+
+/**
+ * @param {number[]} candidates
+ * @param {number} target
+ * @return {number[][]}
+ */
+var combinationSum = function (candidates, target) {
+  // 记录结果
+  var res = [];
+  // 记录回溯的路径
+  var track = [];
+  // 记录 track 中的路径和
+  var trackSum = 0;
+
+  // 回溯算法主函数
+  function backtrack(nums, start, target) {
+      // base case，找到目标和，记录结果
+      if (trackSum === target) {
+          res.push([...track]);
+          return;
+      }
+      // base case，超过目标和，停止向下遍历
+      if (trackSum > target) {
+          return;
+      }
+
+      // 回溯算法标准框架
+      for (var i = start; i < nums.length; i++) {
+          // 选择 nums[i]
+          trackSum += nums[i];
+          track.push(nums[i]);
+          // 递归遍历下一层回溯树
+          // 同一元素可重复使用，注意参数
+          backtrack(nums, i, target);
+          // 撤销选择 nums[i]
+          trackSum -= nums[i];
+          track.pop();
+      }
+  }
+
+  if (candidates.length === 0) {
+      return res;
+  }
+  backtrack(candidates, 0, target);
+  return res;
+};
