@@ -191,3 +191,49 @@ var levelTraverse = function(root) {
       traverse(root.right, depth + 1);
   }
 };
+
+
+// leetcode 111 二叉树的最小深度
+// https://leetcode.cn/problems/minimum-depth-of-binary-tree/
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var minDepth1 = function(root) {
+  if(root===null) return 0;
+  if(!root.left) return 1+minDepth1(root.right);
+  if(!root.right) return 1+minDepth1(root.left);
+
+  const lm=minDepth1(root.left),rm=minDepth1(root.right);
+  return 1+Math.min(lm,rm)
+};
+
+// 解法2
+var minDepth2 = function(root) {
+  if(!root){
+      return 0;
+  }
+  let q = [root];
+  let depth = 1;
+  while (q.length > 0){
+      let size = q.length;
+      /* 将当前队列中的所有节点向四周扩散 */
+      for(let i=0;i<size;i++){
+          let cur = q.shift();
+          /* 判断是否到达终点 */
+          if (cur.left === null && cur.right === null) {
+              return depth;
+          }
+          /* 将 cur 的相邻节点加入队列 */
+          if (cur.left !== null){
+              q.push(cur.left);
+          }
+          if (cur.right !== null){
+              q.push(cur.right);
+          }
+      }
+      /* 这里增加步数 */
+      depth++;
+  }
+  return depth;
+}
